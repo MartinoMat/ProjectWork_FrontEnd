@@ -22,7 +22,7 @@ body {
 	max-height: 90vh;
 	overflow-y: auto;
 	border: 1px solid rgba(255, 255, 255, 0.3);
-}
+}	
 
 /*logo*/
 .logo-box {
@@ -51,40 +51,6 @@ body {
 	}
 }
 
-.top-btn {
-	position: absolute;
-	top: 10px;
-	margin: 0 auto 20px;
-	padding: 5px;
-	border-radius: 14px;
-	border: 2px solid #edf2f7;
-	background: #f8fafc;
-	transition: all 0.3s ease;
-	box-sizing: border-box;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 50px;
-	height: 50px;
-	overflow: hidden;
-}
-
-.btn-r{
-	right:10px
-}
-
-.btn-l {
-	left: 10px
-}
-
-.top-btn-img {
-	opacity: 65%;
-	max-width: 100%;
-	max-height: 100%;
-	object-fit: contain;
-	display: block;
-}
-
 .btn {
 	width: 100%;
 	padding: 14px 18px;
@@ -95,6 +61,47 @@ body {
 	font-size: 16px;
 	transition: all 0.3s ease;
 	box-sizing: border-box;
+}
+.btn:hover {
+	filter: brightness(0.95);
+	cursor: pointer;
+}
+
+.btn.top {
+	position: absolute;
+	top: 10px;
+	margin: 0 auto 20px;
+	padding: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 50px;
+	height: 50px;
+	overflow: hidden;
+}
+
+.btn.top.r {
+	right: 10px
+}
+
+.btn.top.l {
+	left: 10px
+}
+
+/*gestione immagine in bottoni*/
+.top-btn-img {
+	opacity: 65%;
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: contain;
+	display: block;
+}
+
+/*colorazione bottoni di conferma*/
+.conf {
+	background-color: #d4edda;
+	background: #d4edda;
+	border: 2px solid #a9d5b4;
 }
 
 /*area input 1 per riga*/
@@ -174,24 +181,9 @@ input:focus:not([type="date"]) {
 	outline: none;
 }
 
-/*mostra questo elemento solo se si visualizza da Smartphone o tablet*/
-.touch {
-	display: none;
-
-	@media (pointer: coarse) {
-		display: block;
-		text-align:center
-	}
-}
 .inv {
 	display: none;
 }
 .center {
 	text-align: center
-}
-
-.green {
-	background-color: #d4edda;
-	background: #d4edda;
-	border: 2px solid #a9d5b4;
 }

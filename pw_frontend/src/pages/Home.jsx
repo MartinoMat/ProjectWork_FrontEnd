@@ -21,14 +21,16 @@ const Home = () => {
 	return (
 		<div className="container">
 			<div>
-				<div //logo
+				<div
 					className="logo-box">
 					<span>
 						<img src={logo} alt="Logo Aziendale" width= '100%'/>
 					</span>
 				</div>
+
+				{/*tasto logout TOP-SX*/ }
 				<button 
-					className="top-btn"
+					className="btn top l"
 					style={{left: '10px'}}
 					onClick={() => {
 						handleLogout();
@@ -39,8 +41,10 @@ const Home = () => {
 					src={exitImg}
 					alt="Bottone LogOut" />
 				</button>
+
+				{/*tasto gestione anagrafica TOP-DX*/}
 				<button
-					className="top-btn"
+					className="btn top r"
 					style={{ right: '10px' }}
 					onClick={() => {
 						navigate('/account')
@@ -58,19 +62,22 @@ const Home = () => {
 			<form
 				onSubmit={handlePage}>
 
-				<button //tasto Prenotazione Appuntamento
+				{/*tasto Prenotazione Appuntamento*/ }
+				<button
 					className="btn"
 					onClick={() => navigate('/prenota')}>					
 					Prenota Visita/Esame
 				</button>
 
-				<button //tasto Accedi
+				{/*tasto Gestisci Appuntamento*/}
+				<button
 					className="btn"
 					onClick={() => navigate('/gestisci')}>					
 					Gestisci Prenotazioni
 				</button>
-												
-				<button //tasto Referti
+
+				{/*tasto download refderti*/}
+				<button
 					className="btn"
 					onClick={() => navigate('/referti')}>					
 					Visualizza Referti

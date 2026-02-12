@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import goBack from '../img/back.png'
 import conf from '../img/confirm.png'
 import '../css/Style.css';
+import '../css/Account.css';
 
 const Account = () => {
 	const [cf, setCF] = useState('');
@@ -51,7 +52,6 @@ const Account = () => {
 			setComRes(data.com_Residenza);
 			setInd(data.ind_Residenza);
 			setEmail(data.email);
-
 		}
 		catch (err) {
 			console.log(err.message);
@@ -67,6 +67,9 @@ const Account = () => {
 		
 	};
 
+	const handleEmail = () => {
+		window.location.href = `mailto:$segreteria@medilab.it`;
+	}
 	const handleBlur = () => {
 		var err = checkCF(name, sur, bday, gen, comnasc, cf);
 		if (err != "") { alert(err); }
@@ -78,105 +81,74 @@ const Account = () => {
 		e.preventDefault();		
 	};
 
+	let gentxt = gen == 'f' ? 'Femminile' : 'Maschile';
+	const userData = [
+		{ label: "Codice Fiscale", value: cf },
+		{ label: "Nome", value: name },
+		{ label: "Cognome", value: sur },
+		{ label: "Data di Nascita", value: bday.toString() },
+		{ label: "Genere", value: gentxt },
+		{ label: "Comune di Nascita", value: comnasc },
+	];
+
 	return (
 		<div className="container">
 
-			{/*AREA SEMPRE PRESENTE*/}
-			<div className="center">
+			{/*AREA SEMPRE PRESENTE*/ }
+			< div className = "center" >
 				<h1>Anagrafica</h1>
-			</div>
+			</div >
 
-			<button
-				className="top-btn btn-l"
-				onClick={() => {
-					navigate('/home')
-				}}>
+			{/*Bottone torna alla home*/ }
+			< button
+				className = "btn top l"
+				onClick={() => { navigate('/home') }}
+			>
 				<img
 					className="top-btn-img"
 					src={goBack}
 					alt="Bottone torna indietro" />
-			</button>
+			</button >
+
+			{/*Bottone Conferma*/}
 			<button
-				className="top-btn btn-r green"
+				className="btn top r conf"
 				onClick={() => {
 					if (displayed == 'anagrafica') { setDisp('confirm-a'); }
 					else if (displayed == 'password') { setDisp('confirm-p'); }
-					else {handleUpdate}
+					else { handleUpdate }
 				}}>
 				<img
 					className="top-btn-img"
 					src={conf}
 					alt="Bottone conferma modifiche" />
 			</button>
-			
-			{/*FORM MODIFICA ANAGRAFICA*/}
-			{(displayed == 'anagrafica'||displayed==='') && 
-			<form
-				onSubmit={handleUpdate}>
-				
-				
-				<div className="center">Modifica i tuoi dati</div>
+
+		{/*SEZIONE MODIFICA ANAGRAFICA*/}
+			{(displayed == 'anagrafica' || displayed === '') &&
 				<div>
-					<div 									/*Codice Fiscale*/>
-						<label><b>Codice Fiscale</b></label>
+				{/*Container Dati Fissi*/}
+					<div
+						className="container small"
+						title={`Se i dati sono errati contattare: segreteria@medilab.it`}
+						onClick={handleEmail}
+					>
+						{userData.map((item, index) => (
+							<div key={index} className="info-row">
+								<span className="info-label">{item.label}:</span>
+								<span className="info-value">{item.value}</span>
+							</div>
+						))}
+						<div className="touch">
+							<br />Se i precedenti dati sono errati contattare:
+							<b><a href="mailto:segreteria@medilab.it">segreteria@medilab.it</a></b>
+						</div>
 					</div>
+				{/*Elementi Modificabili*/ }
 					<div>
-						<input
-							value={cf}
-							className="txt1r"
-							title={`Se il Codice Fiscale \u00E8 errato contattare segreteria@medilab.it`}
-							disabled
-							style={{
-								cursor: 'help',
-								touchAction: 'manipulation'
-							}}
-						/>
-
-					</div>
-
-					<div   									/*Nome*/
-						className="input-row">
-						<div>
-							<label><b>Nome</b></label>
-							<input
-								value={name}
-								className="txt2r"
-								title={`Se il Nome \u00E8 errato contattare segreteria@medilab.it`}
-								disabled
-								style={{
-									cursor: 'help',
-									touchAction: 'manipulation'
-								}}
-							/>
-						</div>
-
-						<div   								/*Cognome*/
-						>
-							<label><b>Cognome</b></label>
-							<input
-								value={sur}
-								className="txt2r"
-								title={`Se il Cognome \u00E8 errato contattare segreteria@medilab.it`}
-								disabled
-								style={{
-									cursor: 'help',
-									touchAction: 'manipulation'
-								}}
-							/>
-						</div>
-
-					</div>
-					<p className="touch">
-						Se il Codice Fiscale, il Nome o il Cognome sono errati contattare:
-						<b><a href="mailto:segreteria@medilab.it">segreteria@medilab.it</a></b>
-					</p>
-
-					<div									/*email*/>
 						<label><b>E-Mail</b></label>
-					</div>
-					<div>
 						<input
-							className="txt1r"
+							className="txt1r w"
 							type="email"
 							onChange={(e) => setEmail(e.target.value)}
 							pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
@@ -184,101 +156,40 @@ const Account = () => {
 							title="Email"
 							required
 						/>
+							<label><b>Comune di Residenza</b></label>
+							<input
+								className="txt1r"
+								value={comres}
+								onChange={(e) => setComRes(e.target.value)}
+								required
+								onBlur={handleBlur}
+							/>
+							<label><b>Indirizzo</b></label>
+							<input
+								className="txt1r"
+								value={ind}
+								onChange={(e) => setInd(e.target.value)}
+								required
+							/>
 					</div>
-
-					<div									/*selezione data*/>
-						<label><b>Data di Nascita</b></label>
-						<input
-							type="date"
-							value={bday}
-							onChange={(e) => setBday(e.target.value)}
-							max={new Date().toISOString().split("T")[0]} //evita date future
-							required
-						/>
-					</div>
-
-					<div									/*Comune di Nascita*/>
-						<label><b>Comune di Nascita</b></label>
-						<input
-							className="txt1r"
-							value={comnasc}
-							onChange={(e) => setComNasc(e.target.value)}
-							required
-						/>
-					</div>
-
-					<div  									/*Selezione genere*/
-						className="gender-container">
-						<label><b>Genere</b></label>
-
-						<div className="radio-row">
-							<label className="radio-col">
-								<input
-									type="radio"
-									name="genderm"
-									value="m"
-									checked={gen === 'm'}
-									onChange={handleGen}
-									title="Maschile"
-								/>
-								<span>Maschile</span>
-							</label>
-
-							<label className="radio-col">
-								<input
-									type="radio"
-									name="genderf"
-									value="f"
-									checked={gen === 'f'}
-									onChange={handleGen}
-									title="Femminile"
-								/>
-								<span>Femminile</span>
-							</label>
-						</div>
-					</div>
-
-					<div									/*Comune di Residenza*/>
-						<label><b>Comune di Residenza</b></label>
-						<input
-							className="txt1r"
-							value={comres}
-							onChange={(e) => setComRes(e.target.value)}
-							required
-							onBlur={handleBlur}
-						/>
-					</div>
-					<div									/*Indirizzo*/>
-						<label><b>Indirizzo</b></label>
-						<input
-							className="txt1r"
-							value={ind}
-							onChange={(e) => setInd(e.target.value)}
-							required
-						/>
-					</div>
-
-					<p>
-						<button
-							onClick={() => {
-								console.log(displayed);
-								setDisp('password');
-								console.log(displayed+" post");
-							} }
-							className="btn">
-								<b>Vai a Gestione Password</b>
-						</button>
-					</p>
-					</div>
-				</form>}
+					<button
+						onClick={() => {
+							console.log(displayed);
+							setDisp('password');
+							console.log(displayed + " post");
+						}}
+						className="btn">
+						<b>Vai a Gestione Password</b>
+					</button>
+				</div>}
+				{/*FINE MODIFICA ANAGRAFICA*/ } 
 
 
-				{/*MODIFICA PASSWORD*/}
-				{displayed == 'password' && <form>
-					<div  									/*Password*/>
-						<label><b>Nuova Password</b></label>
-					</div>
+			{/*MODIFICA PASSWORD*/}
+			{displayed == 'password' &&
+				<div>
 					<div>
+						<label><b>Nuova Password</b></label>
 						<input
 							className="txt1r"
 							type="password"
@@ -288,44 +199,36 @@ const Account = () => {
 							required
 						/>
 					</div>
-					<div   									/*Conferma Password*/>
-						<label><b>Conferma Nuova Password</b></label>
-					</div>
 					<div>
-
+						<label><b>Conferma Nuova Password</b></label>
 						<input
 							className="txt1r"
 							type="password"
-						placeholder={"\u25CF".repeat(10)}
+							placeholder={"\u25CF".repeat(10)}
 							value={confpsw}
 							onChange={(e) => setConfPsw(e.target.value)}
 							required
 						/>
 					</div>
-					<p>
+					<div>
 						<button
 							onClick={() => {
 								console.log(displayed);
 								setDisp('anagrafica');
-								console.log(displayed +" post");
+								console.log(displayed + " post");
 							}}
 							className="btn">
 							<b>Vai a Gestione Anagrafica</b>
 						</button>
-					</p>
-				</form>}
-						
-
-
+					</div>
+				</div>}
+			{/*FINE MODIFICA PASSWORD*/}
 
 			{/* CONFERMA CON PASSWORD*/}
-			{(displayed === "confirm-a" || displayed === "confirm-p") && <form>
+			{(displayed === "confirm-a" || displayed === "confirm-p") &&
 				<div>
 					{displayed === "confirm-a" && <label><b>Immetti la tua Password</b></label>}
 					{displayed === "confirm-p" && <label><b>Immetti la tua vecchia Password</b></label>}
-				</div>
-				<div>
-
 					<input
 						className="txt1r"
 						type="password"
@@ -334,15 +237,12 @@ const Account = () => {
 						onChange={(e) => setConfPsw(e.target.value)}
 						required
 					/>
-				</div>
-			</form>
-
-			}
-
-
-			
+				</div>}
+			{/*FINE CONFERMA CON PASSWORD*/}
 		</div>
 	);
 };
 
 export default Account;
+
+			

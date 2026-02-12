@@ -1,0 +1,54 @@
+.container.small {
+	width: 100%;
+	padding: 14px 18px;
+	margin: 10px 0 20px 0;
+	border-radius: 14px;
+	border: 2px solid #edf2f7;
+	background: #f8fafc;
+	font-size: 16px;
+	transition: all 0.3s ease;
+	box-sizing: border-box;
+}
+
+.info-row {
+	display: grid;
+	grid-template-columns: 140px 1fr;
+	gap: 10px;
+	align-items: center;
+	padding: 5px 0;
+}
+
+.info-label {
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	font-size: 15px
+}
+
+.info-value {
+	font-size: 1rem;
+	word-break: break-all;
+}
+
+@media (max-width: 400px) {
+	.info-row {
+		grid-template-columns: 1fr;
+		gap: 4px;
+		text-align: center;
+		padding: 8px 0;
+	}
+}
+
+/*mostra questo elemento solo se si visualizza da Smartphone o tablet*/
+.touch {
+	display: none;
+
+	@media (pointer: coarse) {
+		display: block;
+		text-align: center
+	}
+}
+
+.w {
+	background: rgba(255, 255, 255, 0.9);
+}

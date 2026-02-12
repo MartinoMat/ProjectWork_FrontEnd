@@ -29,7 +29,7 @@ const Login = () => {
 
 	return (
 		<div className="container">
-			<div		/*Logo*/>
+			<div>
 				<div className="logo-box">
 					<span>
 						<img src={mioLogo} alt="Logo Aziendale" width= '100%'/>
@@ -39,11 +39,11 @@ const Login = () => {
 				<p>Inserisca i suoi dati per accedere ai nostri servizi</p>
 			</div>
 
-			<form		/*Form Login*/
-				onSubmit={handleLogin}>
+			{/*Form di input dati per Login*/}
+			<form onSubmit={handleLogin}>
 
-				
-				<div /*txt Codice Fiscale*/>
+				{/*input per Codice Fiscale*/}
+				<div>
 					<label><b>Codice Fiscale</b></label>
 				</div>
 				<div>
@@ -60,7 +60,8 @@ const Login = () => {
 					/>
 				</div>
 
-				<div  /*input Password*/>
+				{/*Input per Password*/}
+				<div>
 					<label><b>Password</b></label>
 				</div>
 				<div>
@@ -76,18 +77,20 @@ const Login = () => {
 						required
 					/>
 				</div>
-												
-				<button //tasto Accedi
-					className="btn green"
+
+				{/*Bottone accesso*/ }
+				<button
+					className="btn conf"
 					type="submit"
 					>
 					Accedi
 				</button>
 
-			<button		//tasto Registrati
-					className=" btn "
-				onClick={() => navigate('/register')}>
-				Registrati ora
+				{/*Bottone per pagina di registrazione*/ }
+				<button
+					className="btn "
+					onClick={() => navigate('/register')}>
+					Registrati ora
 				</button>
 			</form>
 
