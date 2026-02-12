@@ -1,0 +1,197 @@
+body {
+	background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+	margin: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+}
+
+/* card login*/
+.container {
+	position: relative;
+	background: rgba(255, 255, 255, 0.9);
+	backdrop-filter: blur(10px);
+	border-radius: 30px;
+	padding: 30px 30px;
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+	width: 80vw;
+	max-width: 400px;
+	height: auto;
+	max-height: 90vh;
+	overflow-y: auto;
+	border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/*logo*/
+.logo-box {
+	background: rgba(122, 141, 255, 0.35);
+	width: 70%;
+	border-radius: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto 20px;
+	box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+	animation: float 3s ease-in-out infinite;
+}
+/*animazione logo*/
+@keyframes float {
+	0% {
+		transform: translateY(0px);
+	}
+
+	50% {
+		transform: translateY(-10px);
+	}
+
+	100% {
+		transform: translateY(0px);
+	}
+}
+
+.top-btn {
+	position: absolute;
+	top: 10px;
+	margin: 0 auto 20px;
+	padding: 5px;
+	border-radius: 14px;
+	border: 2px solid #edf2f7;
+	background: #f8fafc;
+	transition: all 0.3s ease;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 50px;
+	height: 50px;
+	overflow: hidden;
+}
+
+.btn-r{
+	right:10px
+}
+
+.btn-l {
+	left: 10px
+}
+
+.top-btn-img {
+	opacity: 65%;
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: contain;
+	display: block;
+}
+
+.btn {
+	width: 100%;
+	padding: 14px 18px;
+	margin: 10px 0;
+	border-radius: 14px;
+	border: 2px solid #edf2f7;
+	background-color: #f8fafc;
+	font-size: 16px;
+	transition: all 0.3s ease;
+	box-sizing: border-box;
+}
+
+/*area input 1 per riga*/
+.txt1r,
+input[type="date"] {
+	width: 100%;
+	padding: 14px 18px;
+	margin: 10px 0;
+	border-radius: 14px;
+	border: 2px solid #edf2f7;
+	background: #f8fafc;
+	font-size: 16px;
+	transition: all 0.3s ease;
+	box-sizing: border-box;
+}
+/* container 2 colonne per input */
+.input-row {
+	display: flex;
+	gap: 10px; /* Spazio tra i due input */
+	width: 100%;
+	box-sizing: border-box;
+}
+/*area input 2 per riga*/
+.txt2r {
+	flex: 1;
+	width: 100%;
+	padding: 14px 18px;
+	margin: 10px 0;
+	border-radius: 14px;
+	border: 2px solid #edf2f7;
+	background: #f8fafc;
+	font-size: 14px;
+	transition: all 0.3s ease;
+	box-sizing: border-box;
+}
+
+/*su schermi piccoli input uno sotto l'altro*/
+@media (max-width: 400px) {
+	.input-row {
+		flex-direction: column;
+		gap: 10px;
+	}
+}
+
+.radio-col {
+	flex: 1;
+	width: 100%;
+	padding: 14px 18px;
+	margin: 10px 0;
+	border-radius: 14px;
+	border: 2px solid #edf2f7;
+	background: #f8fafc;
+	font-size: 14px;
+	transition: all 0.3s ease;
+	box-sizing: border-box;
+}
+
+.radio-row {
+	display: flex;
+	gap: 10px;
+	width: 100%;
+}
+
+@media (max-width: 400px) {
+	.radio-row {
+		flex-direction: column;
+		gap: 0;
+	}
+}
+
+/*effetti su input esclusi i radiobutton e selettore data*/
+input:focus:not([type="radio"]),
+input:focus:not([type="date"]) {
+	border-color: #6366f1;
+	background: #fff;
+	box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+	outline: none;
+}
+
+/*mostra questo elemento solo se si visualizza da Smartphone o tablet*/
+.touch {
+	display: none;
+
+	@media (pointer: coarse) {
+		display: block;
+		text-align:center
+	}
+}
+.inv {
+	display: none;
+}
+.center {
+	text-align: center
+}
+
+.green {
+	background-color: #d4edda;
+	background: #d4edda;
+	border: 2px solid #a9d5b4;
+}
