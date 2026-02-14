@@ -1,7 +1,7 @@
 import React, { useState , useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import { checkCF } from '../functions/CfManager.jsx';
 import { jwtDecode } from "jwt-decode";
+import {genSHA256 } from '../functions/Hash'
 import goBack from '../img/back.png'
 import conf from '../img/confirm.png'
 import '../css/Style.css';
@@ -19,6 +19,7 @@ const Account = () => {
 	const [email, setEmail] = useState('');
 
 	const [psw, setPassword] = useState('');
+	const [npsw, setNewPassword] = useState('');
 	const [confpsw, setConfPsw] = useState('');
 
 	const [displayed, setDisp] = useState('');
@@ -62,26 +63,14 @@ const Account = () => {
 		compilaCampi();
 	}, []);
 
-	const handleGen = (e) => {
-		setGen(e.target.value);
-		
-	};
-
 	const handleEmail = () => {
 		window.location.href = `mailto:$segreteria@medilab.it`;
 	}
-	const handleBlur = () => {
-		var err = checkCF(name, sur, bday, gen, comnasc, cf);
-		if (err != "") { alert(err); }
-	};
 
 	const navigate = useNavigate();
 
-	const handleUpdate = async (e) => {
-		e.preventDefault();		
-	};
-
 	let gentxt = gen == 'f' ? 'Femminile' : 'Maschile';
+
 	const userData = [
 		{ label: "Codice Fiscale", value: cf },
 		{ label: "Nome", value: name },
@@ -90,6 +79,55 @@ const Account = () => {
 		{ label: "Genere", value: gentxt },
 		{ label: "Comune di Nascita", value: comnasc },
 	];
+
+	const handleUpdate = async (e) => {
+		e.preventDefault();
+		
+		var passwordHash = await genSHA256(psw);
+		var pswNewHash = await genSHA256(npsw);
+		var url = '';
+		var body = '';
+		if (displayed == 'confirm-a') {/*POST USER INFO UPDATE */
+			url = 'https://localhost:7036/User/UserUpdate';
+			body = JSON.stringify({
+				UserId: token.sub,
+				Com_Residenza: comres,
+				Ind_Residenza: ind,
+				Email: email,
+				PasswordHash: passwordHash
+			});
+		}		
+		else {/*POST USER PASSWORD UPDATE */
+			url = 'https://localhost:7036/User/UserPswUpdate';
+			body = JSON.stringify({
+				UserId: token.sub,
+				PasswordHash: passwordHash,
+				PasswordNew: pswNewHash
+			});
+		}
+		
+		try {			
+			const response = await fetch(url, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: body,
+			});
+			if (!response.ok) {
+				const errorData = response.json();
+				throw new Error(errorData.message || 'Errore durante l\'update');
+			}
+			else {
+				if (displayed == 'confirm-p') { alert('Password aggiornata con successo.'); }
+				else { alert('Anagrafica aggiornata con successo.'); }
+				setDisp('anagrafica');
+			}
+
+		} catch (err) {
+			console.log(err.message);
+		}
+	};
 
 	return (
 		<div className="container">
@@ -102,7 +140,13 @@ const Account = () => {
 			{/*Bottone torna alla home*/ }
 			< button
 				className = "btn top l"
-				onClick={() => { navigate('/home') }}
+				onClick={() => {
+					if ((displayed === "confirm-a" || displayed === "confirm-p")) {
+						if (displayed == 'confirm-p') { setDisp('password'); }
+						else { setDisp('anagrafica'); }					}
+					else {navigate('/home');
+				}
+				}}
 			>
 				<img
 					className="top-btn-img"
@@ -110,19 +154,25 @@ const Account = () => {
 					alt="Bottone torna indietro" />
 			</button >
 
+			<form
+				onSubmit={handleUpdate}>
 			{/*Bottone Conferma*/}
-			<button
+			{!(displayed === "confirm-a" || displayed === "confirm-p") &&<button
 				className="btn top r conf"
 				onClick={() => {
-					if (displayed == 'anagrafica') { setDisp('confirm-a'); }
-					else if (displayed == 'password') { setDisp('confirm-p'); }
-					else { handleUpdate }
+					if (displayed == 'anagrafica' || displayed == '') { setDisp('confirm-a'); }
+					else {
+						if (npsw != confpsw) { alert("Le due Password non coincidono"); }
+						else { setDisp('confirm-p'); }
+					}
 				}}>
 				<img
 					className="top-btn-img"
 					src={conf}
 					alt="Bottone conferma modifiche" />
 			</button>
+
+			}
 
 		{/*SEZIONE MODIFICA ANAGRAFICA*/}
 			{(displayed == 'anagrafica' || displayed === '') &&
@@ -158,15 +208,14 @@ const Account = () => {
 						/>
 							<label><b>Comune di Residenza</b></label>
 							<input
-								className="txt1r"
+								className="txt1r w"
 								value={comres}
 								onChange={(e) => setComRes(e.target.value)}
 								required
-								onBlur={handleBlur}
 							/>
 							<label><b>Indirizzo</b></label>
 							<input
-								className="txt1r"
+								className="txt1r w"
 								value={ind}
 								onChange={(e) => setInd(e.target.value)}
 								required
@@ -174,9 +223,7 @@ const Account = () => {
 					</div>
 					<button
 						onClick={() => {
-							console.log(displayed);
 							setDisp('password');
-							console.log(displayed + " post");
 						}}
 						className="btn">
 						<b>Vai a Gestione Password</b>
@@ -191,18 +238,18 @@ const Account = () => {
 					<div>
 						<label><b>Nuova Password</b></label>
 						<input
-							className="txt1r"
+							className="txt1r w"
 							type="password"
 							placeholder={"\u25CF".repeat(10)}
-							value={psw}
-							onChange={(e) => setPassword(e.target.value)}
+							value={npsw}
+							onChange={(e) => setNewPassword(e.target.value)}
 							required
 						/>
 					</div>
 					<div>
 						<label><b>Conferma Nuova Password</b></label>
 						<input
-							className="txt1r"
+							className="txt1r w"
 							type="password"
 							placeholder={"\u25CF".repeat(10)}
 							value={confpsw}
@@ -213,9 +260,7 @@ const Account = () => {
 					<div>
 						<button
 							onClick={() => {
-								console.log(displayed);
 								setDisp('anagrafica');
-								console.log(displayed + " post");
 							}}
 							className="btn">
 							<b>Vai a Gestione Anagrafica</b>
@@ -233,12 +278,18 @@ const Account = () => {
 						className="txt1r"
 						type="password"
 						placeholder={"\u25CF".repeat(10)}
-						value={confpsw}
-						onChange={(e) => setConfPsw(e.target.value)}
+						value={psw}
+						onChange={(e) => setPassword(e.target.value)}
 						required
 					/>
+					<button
+						type='submit'
+						className="btn conf">
+						<b>Conferma Modifiche</b>
+					</button>
 				</div>}
-			{/*FINE CONFERMA CON PASSWORD*/}
+				{/*FINE CONFERMA CON PASSWORD*/}
+			</form>
 		</div>
 	);
 };
