@@ -1,0 +1,63 @@
+.container.small {
+	width: 100%;
+	padding: 14px 18px;
+	margin: 10px 0 20px 0;
+	border-radius: 14px;
+	border: 2px solid #edf2f7;
+	background: #f8fafc;
+	font-size: 16px;
+	transition: all 0.3s ease;
+	box-sizing: border-box;
+}
+.top-btn-img.small {
+	transform: scale(0.7);
+}
+.top-btn-img.flip {
+	transform: scaleX(-1) scale(0.7);
+}
+.cols {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 5px
+}
+.daysNames {
+	font-weight: bold;
+	text-align: center
+}
+
+.cell {
+	width: 100%;
+	border-radius: 10px;
+	font-size: 16px;
+	box-sizing: border-box;
+	top: 10px;
+	margin: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	aspect-ratio: 1 / 1;
+	overflow: hidden;
+}
+
+.al{
+	align-content: center
+}
+
+.my-select-container {
+	width: 100%;
+	margin:5px
+}
+
+.my-select__control {
+	width: 100% !important;
+	min-height: unset !important;
+	padding: 2px 8px !important;
+	border-radius: 14px !important;
+	border: 2px solid #edf2f7 !important;
+	background: #f8fafc !important;
+	font-size: 14px !important;
+	transition: all 0.3s ease !important;
+	box-sizing: border-box !important;
+	box-shadow: none !important;
+}
