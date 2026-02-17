@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import {
@@ -24,8 +24,11 @@ import '../css/Calendar.css';
 const Prenota = () => {
 	const [currentMonth, setCurrentMonth] = useState(new Date());
 	const [selDate, setSelectedDate] = useState('');
-
-	// Calcolo dei giorni da mostrare nella griglia
+	const [datiReparti, setDatiReparti] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [repartoScelto, setRepartoScelto] = useState(null);
+	const [esameScelto, setEsameScelto] = useState(null);
+	
 	const monthStart = startOfMonth(currentMonth);
 	const monthEnd = endOfMonth(monthStart);
 	const startDate = startOfWeek(monthStart);
@@ -34,18 +37,53 @@ const Prenota = () => {
 	const days = eachDayOfInterval({ start: startDate, end: endDate });
 
 	const navigate = useNavigate();
+			
+	useEffect(() => {
+		const fetchDati = async () => {
+			try {
+				setLoading(true);
+				const response = await fetch('https://localhost:7036/Prenotazioni/Esami');
 
-	const visite = [
-		{ value: 'chocolate', label: 'Chocolate' },
-		{ value: 'strawberry', label: 'Strawberry' },
-		{ value: 'vanilla', label: 'Vanilla' }
-	]
+				if (!response.ok) {
+					throw new Error('Errore nel recupero dei dati');
+				}
+
+				const data = await response.json();
+				setDatiReparti(data);
+			} catch (err) {
+				console.log(err.message);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchDati();
+	}, []);
+
+	
+	const optionsReparti = datiReparti.map(r => ({
+		value: r.repartoId,
+		label: r.nome_Reparto,
+		esami: r.esami
+	}));
+	const optionsEsami = repartoScelto
+		? repartoScelto.esami.map(e => ({
+			value: e.esameId,
+			label: e.nome_Esame
+		}))
+		: [];
+	const handleRepartoChange = (selectedOption) => {
+		setRepartoScelto(selectedOption);
+		setEsameScelto(null);
+	};
+	if (loading) return <div>Caricamento in corso...</div>;
+	
 
 	const test = [
 		"12 Febbraio 2026",
 		"24 Febbraio 2026",
-		"16 Febbraio 2026",
-		"01 Febbraio 2026",
+		"16 marzo 2026",
+		"01 marzo 2026",
 		"01 Aprile 2026"
 	];
 
@@ -121,7 +159,9 @@ const Prenota = () => {
 			<div className='input-row'>
 				<label className="al"><b>Reparto</b></label>
 				<Select
-					options={visite}
+					options={optionsReparti}
+					value={repartoScelto}
+					onChange={handleRepartoChange}
 					classNamePrefix="my-select"
 					className="my-select-container"					
 				/>
@@ -131,7 +171,10 @@ const Prenota = () => {
 			<div className='input-row'>
 				<label className="al"><b>Esame</b></label>
 				<Select
-					options={visite}
+					options={optionsEsami}
+					value={esameScelto}
+					onChange={(opt) => setEsameScelto(opt)}
+					isDisabled={!repartoScelto}
 					classNamePrefix="my-select"
 					className="my-select-container"
 				/>
