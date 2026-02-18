@@ -23,12 +23,13 @@ import '../css/Calendar.css';
 
 const Prenota = () => {
 	const [currentMonth, setCurrentMonth] = useState(new Date());
-	const [selDate, setSelectedDate] = useState('');
 	const [datiReparti, setDatiReparti] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [repartoScelto, setRepartoScelto] = useState(null);
 	const [esameScelto, setEsameScelto] = useState(null);
-	
+	const [dataScelta, setDataScelta] = useState(null);
+	const [oraioScelto, setOrarioScelto] = useState(null);
+
 	const monthStart = startOfMonth(currentMonth);
 	const monthEnd = endOfMonth(monthStart);
 	const startDate = startOfWeek(monthStart);
@@ -37,7 +38,7 @@ const Prenota = () => {
 	const days = eachDayOfInterval({ start: startDate, end: endDate });
 
 	const navigate = useNavigate();
-			
+
 	useEffect(() => {
 		const fetchDati = async () => {
 			try {
@@ -60,7 +61,7 @@ const Prenota = () => {
 		fetchDati();
 	}, []);
 
-	
+{/*Mapping dei dati dal JSON*/ }
 	const optionsReparti = datiReparti.map(r => ({
 		value: r.repartoId,
 		label: r.nome_Reparto,
@@ -69,46 +70,57 @@ const Prenota = () => {
 	const optionsEsami = repartoScelto
 		? repartoScelto.esami.map(e => ({
 			value: e.esameId,
-			label: e.nome_Esame
+			label: e.nome_Esame,		
+			prenotazione: e.prenotazione
 		}))
 		: [];
-	const handleRepartoChange = (selectedOption) => {
-		setRepartoScelto(selectedOption);
+
+	const elencoDate = esameScelto
+		? esameScelto.prenotazione.map(p => p.data)
+		: [];
+
+	const elencoOrari = (repartoScelto && esameScelto && dataScelta)
+		? esameScelto.prenotazione
+			.find(p => p.data === format(dataScelta, 'yyyy-MM-dd'), { locale: it })
+			?.orari.map(o => o.orario) || []
+		: [];
+
+
+{/*Gestieone dei select di Reparto ed Esame*/ }
+	const handleRepartoChange = (selectedOptionR) => {
+		setRepartoScelto(selectedOptionR);
 		setEsameScelto(null);
 	};
+
+	const handleEsameChange = (selectedOptionE) => {
+		setEsameScelto(selectedOptionE);
+	};
+
 	if (loading) return <div>Caricamento in corso...</div>;
-	
 
-	const test = [
-		"12 Febbraio 2026",
-		"24 Febbraio 2026",
-		"16 marzo 2026",
-		"01 marzo 2026",
-		"01 Aprile 2026"
-	];
 
-	{/*Metodo per impostare i colori nel calendario di backgfround e bordi*/ }
-	const bgBorderCol = (day, list = [], bg = true) => {
+{/*Metodo per impostare i colori nel calendario di backgfround e bordi*/ }
+	const bgBorderData = (day, list = [], bg = true) => {
 		let color = '';
 		let isAvaiable = list.some(availableDay => isSameDay(new Date(availableDay), day));
 
 		if (bg) {
-			if (isSameMonth(day, monthStart) && (isFuture(day, new Date())||isSameDay(day, new Date()))) {
+			if (isSameMonth(day, monthStart) && (isFuture(day, new Date()) || isSameDay(day, new Date()))) {
 				if (isSameDay(day, new Date())) {
 					color = '#ffc966';
-				} 				
+				}
 				else {
 					if (isAvaiable) { color = "#d4edda"; }
 					else { color = '#ffffff'; }
-				}				
+				}
 			}
 			else { color = '#f0f0f0'; }
 
 		}
-		else {			
-			
+		else {
+
 			if (isSameMonth(day, monthStart) && (isFuture(day, new Date()) || isSameDay(day, new Date()))) {
-				if (isSameDay(day, selDate)) { color = '3px solid #ff4848'; }
+				if (isSameDay(day, dataScelta)) { color = '3px solid #ff4848'; }
 				else {
 					if (isAvaiable) { color = "3px solid #a9d5b4"; }
 					else {
@@ -120,20 +132,18 @@ const Prenota = () => {
 				}
 			}
 			else { color = '2px solid #dbdbdb'; }
-			
 		}
-
 		return color;
 	}
 
 	return (
 		<div className="container">
-			{/*AREA SEMPRE PRESENTE*/ }
-			< div className = "center" >
+		{/*AREA SEMPRE PRESENTE*/}
+			< div className="center" >
 				<h1>Prenotazioni</h1>
 			</div >
 
-			{/*Bottone torna alla home*/ }
+		{/*Bottone torna alla home*/}
 			< button
 				className="btn top l"
 				onClick={() => {
@@ -146,7 +156,7 @@ const Prenota = () => {
 				/>
 			</button >
 
-			{/*Bottone Conferma*/}
+		{/*Bottone Conferma*/}
 			<button className="btn top r conf">
 				<img
 					className="top-btn-img"
@@ -155,7 +165,7 @@ const Prenota = () => {
 				/>
 			</button>
 
-			{/*Zona selezione reparto*/ }
+		{/*Zona selezione reparto*/}
 			<div className='input-row'>
 				<label className="al"><b>Reparto</b></label>
 				<Select
@@ -163,27 +173,27 @@ const Prenota = () => {
 					value={repartoScelto}
 					onChange={handleRepartoChange}
 					classNamePrefix="my-select"
-					className="my-select-container"					
+					className="my-select-container"
 				/>
 			</div>
 
-			{/*Zona selezione appuntamento*/}
+		{/*Zona selezione appuntamento*/}
 			<div className='input-row'>
 				<label className="al"><b>Esame</b></label>
 				<Select
 					options={optionsEsami}
 					value={esameScelto}
-					onChange={(opt) => setEsameScelto(opt)}
+					onChange={handleEsameChange}
 					isDisabled={!repartoScelto}
 					classNamePrefix="my-select"
 					className="my-select-container"
 				/>
 			</div>
 
-			{/*Container Calendario */}
+		{/*Container Calendario */}
 			<div className="container small" >
 				<div>
-					{isFuture(currentMonth, new Date())&&<button
+					{isFuture(currentMonth, new Date()) && <button
 						className="btn top l"
 						onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>
 						<img
@@ -192,7 +202,7 @@ const Prenota = () => {
 							alt="Bottone mese precedente" />
 					</button>}
 
-					<div className='center'><h2>{format(currentMonth, 'MMMM yyyy', {locale : it})}</h2></div>
+					<div className='center'><h2>{format(currentMonth, 'MMMM yyyy', { locale: it })}</h2></div>
 					<button
 						className="btn top r"
 						onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>
@@ -202,7 +212,7 @@ const Prenota = () => {
 							alt="Bottone mese successivo" /></button>
 				</div>
 
-				{/* Griglia dei giorni */}
+			{/* Griglia dei giorni */}
 				<div className='cols'>
 					{['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'].map(d => (
 						<div key={d} className="daysNames">{d}</div>
@@ -213,21 +223,43 @@ const Prenota = () => {
 							className='cell'
 							key={idx}
 							style={{
-								backgroundColor: bgBorderCol(day, test),
-								border: bgBorderCol(day, test, false)
+								backgroundColor: bgBorderData(day, elencoDate),
+								border: bgBorderData(day, elencoDate, false)
 							}}
-							onClick={() => {setSelectedDate(day);}}>
+							onClick={() => {
+								setDataScelta(day);
+								setOrarioScelto(null);
+							}}>
 							{format(day, 'd')}
 						</div>
 					))}
 				</div>
 			</div>
 
-			{/*Container Orario*/}
-			{selDate !== '' && <div className="container small">
-				{format(selDate, 'dd MMMM yyyy', {locale: it})}
+		{/*Container Orario*/}
+			{dataScelta && <div className="container small">
+				{elencoOrari.length>0 && <div>
+					Per il <b>{format(dataScelta, 'dd MMMM yyyy', { locale: it })}</b> sono disponibili i seguenti orari: <br /><br />
+					<div className='cols ore'>
+						{elencoOrari.map((t, idy) => (
+							<div
+								className='cell ore'
+								onClick={() => { setOrarioScelto(t); }}
+								key={idy}
+								style={{
+									backgroundColor: '#ffffff',
+									border: oraioScelto === t ? '3px solid #ff4848' : '2px solid #dddddd'
+								}}>
+								{t.slice(0, 5)}
+							</div>
+						))}
+					</div>
+				</div>}
+				{elencoOrari.length == 0 && <div>
+					Per il <b>{format(dataScelta, 'dd MMMM yyyy', { locale: it })} NON</b> sono disponibili i seguenti orari.
+				</div>}
 			</div>}
-		</div>    
+		</div>
 	);
 };
 

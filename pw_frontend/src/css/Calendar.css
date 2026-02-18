@@ -12,14 +12,23 @@
 .top-btn-img.small {
 	transform: scale(0.7);
 }
+
 .top-btn-img.flip {
 	transform: scaleX(-1) scale(0.7);
 }
+
 .cols {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 	gap: 5px
 }
+
+.cols.ore {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 5px
+}
+
 .daysNames {
 	font-weight: bold;
 	text-align: center
@@ -38,6 +47,9 @@
 	width: 100%;
 	aspect-ratio: 1 / 1;
 	overflow: hidden;
+}
+.cell.ore {
+	aspect-ratio: 1/0.8;
 }
 
 .al{
