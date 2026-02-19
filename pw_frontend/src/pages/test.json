@@ -1,0 +1,42 @@
+[
+  {
+    "prenotazioneId": 32,
+    "repartoId": 2,
+    "esameId": 4,
+    "data": "2026-02-21",
+    "orario": "11:30:00",
+    "riservato": "17322d084eac63a9173163429959890a99bc7c0a1589e34bf64a130fc230ece2"
+  },
+  {
+    "prenotazioneId": 10,
+    "repartoId": 2,
+    "esameId": 4,
+    "data": "2026-02-21",
+    "orario": "11:00:00",
+    "riservato": "17322d084eac63a9173163429959890a99bc7c0a1589e34bf64a130fc230ece2"
+  },
+  {
+    "prenotazioneId": 7,
+    "repartoId": 1,
+    "esameId": 1,
+    "data": "2026-02-21",
+    "orario": "11:00:00",
+    "riservato": "17322d084eac63a9173163429959890a99bc7c0a1589e34bf64a130fc230ece2"
+  },
+  {
+    "prenotazioneId": 29,
+    "repartoId": 1,
+    "esameId": 1,
+    "data": "2026-09-21",
+    "orario": "11:30:00",
+    "riservato": "17322d084eac63a9173163429959890a99bc7c0a1589e34bf64a130fc230ece2"
+  },
+  {
+    "prenotazioneId": 51,
+    "repartoId": 1,
+    "esameId": 1,
+    "data": "2026-02-28",
+    "orario": "10:00:00",
+    "riservato": "17322d084eac63a9173163429959890a99bc7c0a1589e34bf64a130fc230ece2"
+  }
+]

@@ -20,7 +20,7 @@ import goBack from '../img/back.png';
 import conf from '../img/confirm.png';
 import arrow from '../img/next.png';
 import '../css/Style.css';
-import '../css/Calendar.css';
+import '../css/Prenotazioni.css';
 
 const Prenota = () => {
 	const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -41,7 +41,6 @@ const Prenota = () => {
 	const days = eachDayOfInterval({ start: startDate, end: endDate });
 
 	const navigate = useNavigate();
-
 
 	let token = jwtDecode(localStorage.getItem('token'));
 
@@ -153,7 +152,7 @@ const Prenota = () => {
 	}
 
 
-{/*Preparazione e invio prenotaszione tramite httpPUT*/ }
+{/*Preparazione e invio prenotazione tramite httpPUT*/ }
 	const handlePrenota = async (e) => {
 		e.preventDefault();
 		var body = JSON.stringify({
@@ -181,7 +180,7 @@ const Prenota = () => {
 
 		} catch (err) {
 			console.log(err.message);
-		}
+		}//setPrenotato('Prenotazione andata a buon fine!');
 	};
 
 	return (
@@ -216,8 +215,8 @@ const Prenota = () => {
 				</button>}
 
 				{/*Zona selezione reparto*/}
-				<div className='input-row'>
-					<label className="al"><b>Reparto</b></label>
+				<div className='cont-sel'>
+					<label className="label-sel al"><b>Reparto</b></label>
 					<Select
 						options={optionsReparti}
 						value={repartoScelto}
@@ -228,8 +227,8 @@ const Prenota = () => {
 				</div>
 
 				{/*Zona selezione appuntamento*/}
-				<div className='input-row'>
-					<label className="al"><b>Esame</b></label>
+				<div className='cont-sel'>
+					<label className="label-sel al"><b>Esame</b></label>
 					<Select
 						options={optionsEsami}
 						value={esameScelto}
