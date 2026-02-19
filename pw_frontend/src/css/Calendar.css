@@ -73,3 +73,33 @@
 	box-sizing: border-box !important;
 	box-shadow: none !important;
 }
+
+.cont-pren {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	column-gap: 20px;
+	row-gap: 10px;
+	align-items: center;
+}
+
+.input-row-pren {
+	display: contents;
+}
+
+.pren-label {
+	grid-column: 1;
+	font-size: 1rem;
+	color: #3d3d3d;
+	white-space: nowrap;
+	text-align: right
+}
+
+.pren-val {
+	grid-column: 2;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	font-size: 20px;
+	word-break: break-word;
+	text-align: left
+}
