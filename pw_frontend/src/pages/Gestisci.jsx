@@ -28,7 +28,9 @@ const Gestisci = () => {
 	const [datiPren, setPrenotazioni] = useState([]);
 	const [dettagli, setDettagli] = useState(1);
 	const [dettPren, setDettPren] = useState(null);
+	const [dettRepartoId, setDettRepId] = useState(null);
 	const [dettReparto, setDettRep] = useState(null);
+	const [dettEsameId, setDettEsameId] = useState(null);
 	const [dettEsame, setDettEsame] = useState(null);
 	const [dettData, setDettData] = useState(null);
 	const [dettOrario, setDettOrario] = useState(null);
@@ -68,8 +70,8 @@ const Gestisci = () => {
 		e.preventDefault();
 		var body = JSON.stringify({
 			prenotazioneId: dettPren,
-			repartoId: dettReparto,
-			esameId: dettEsame,
+			repartoId: dettRepartoId,
+			esameId: dettEsameId,
 			data: format(dettData, 'yyyy-MM-dd', { locale: it }),
 			orario: dettOrario,
 			riservato: token.sub
@@ -114,19 +116,22 @@ const Gestisci = () => {
 					alt="Bottone torna indietro"
 				/>
 			</button >
-			{dettagli===1 && <div>
-				< div className="center" >
-					<h2>Le tue prenotazioni</h2>
-				</div >
-		{/*Bottone Conferma*/}
-			<button className="btn top r conf">
+
+
+			{/*Bottone Conferma*/}
+			{dettagli === 3 &&	<button className="btn top r conf">
 				<img
 					className="top-btn-img"
 					src={conf}
 					alt="Bottone conferma"
 				//onClick={handlePrenota}
 				/>
-			</button>
+			</button>}
+
+			{dettagli === 1 &&	<div>
+				< div className="center" >
+					<h2>Le tue prenotazioni</h2>
+				</div >
 
 		{/*CREAZIONE DEI CONTAINER DELLE PRENOTAZIONI*/ }
 			<div className='al' style={{ 'padding': '0 0 10px 0' }}>{statoCanc}</div>
@@ -140,24 +145,26 @@ const Gestisci = () => {
 						setDettagli(2);
 						setStatoCanc(null);
 						setDettPren(item.prenotazioneId);
-						setDettRep(item.repartoId);
-						setDettEsame(item.esameId);
+						setDettRepId(item.repartoId);
+						setDettRep(item.nomeReparto);
+						setDettEsameId(item.esameId);
+						setDettEsame(item.nomeEsame);
 						setDettData(item.data);
 						setDettOrario(item.orario);
 					}}
 					className='container mini'
 				>
 					<div className='info-pren'>
-						ID Prenotazione: {item.prenotazioneId}
+						Codice Prenotazione: {item.prenotazioneId}
 					</div>
 					<div className='cont-pren elenco'>
 						<div className='input-row-pren'>
 							<span className="pren-label info-display">Reparto:</span>
-							<span className="pren-val info-display"><b>{item.repartoId}</b></span>
+							<span className="pren-val info-display"><b>{item.nomeReparto}</b></span>
 						</div>
 						<div className='input-row-pren'>
 							<span className="pren-label info-display">Esame: </span>
-							<span className="pren-val info-display"><b>{item.esameId}</b></span>
+							<span className="pren-val info-display"><b>{item.nomeEsame}</b></span>
 						</div>
 						<div className='input-row-pren'>
 							<span className="pren-label info-display">In data: </span>
@@ -217,7 +224,7 @@ const Gestisci = () => {
 
 			{/*MODIFICA PRENOTAZIONE*/}
 			{dettagli == 3 && <div>
-
+				
 			</div>}
 	</div>
   );
