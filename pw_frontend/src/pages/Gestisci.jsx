@@ -38,30 +38,28 @@ const Gestisci = () => {
 
 	let token = jwtDecode(localStorage.getItem('token'));
 
-	useEffect(() => {
-		const fetchDati = async () => {
-			console.log(token.sub);
+	const fetchDati = async () => {
+		try {
+			const response = await fetch('https://localhost:7036/Prenotazioni/PrenotazioniUser', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(token.sub),
+			});
 
-			try {
-				const response = await fetch('https://localhost:7036/Prenotazioni/PrenotazioniUser', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify( token.sub),
-				});
-
-				if (!response.ok) {
-					throw new Error('Errore nel recupero dei dati');
-				}
-
-				const data = await response.json();
-				setPrenotazioni(data);
-			} catch (err) {
-				console.log(err.message);
+			if (!response.ok) {
+				throw new Error('Errore nel recupero dei dati');
 			}
-		};
 
+			const data = await response.json();
+			setPrenotazioni(data);
+		} catch (err) {
+			console.log(err.message);
+		}
+	};
+
+	useEffect(() => {
 		fetchDati();
 	}, []);
 
@@ -89,11 +87,12 @@ const Gestisci = () => {
 				const errorData = response.json();
 				throw new Error(errorData.message || 'Errore durante l\'update');
 			}
-			let esame = dettEsame.value;
-			setStatoCanc({esame} + 'del ' + {dettData} + ' alle ' + dettOrario.slice(0, 5)+' è stato annullato con successo');
+			console.log(dettEsame +  'del ' +  dettData  + ' alle ' + dettOrario.slice(0, 5) + ' è stato annullato con successo')
+			setStatoCanc(dettEsame + ' del ' + dettData + ' alle ' + dettOrario.slice(0, 5)+' è stato annullato con successo');
 		} catch (err) {
 			console.log(err.message);
 		}
+		fetchDati();
 		setDettagli(1);
 	};
 
@@ -119,7 +118,7 @@ const Gestisci = () => {
 				< div className="center" >
 					<h2>Le tue prenotazioni</h2>
 				</div >
-			{/*Bottone Conferma*/}
+		{/*Bottone Conferma*/}
 			<button className="btn top r conf">
 				<img
 					className="top-btn-img"
@@ -128,7 +127,12 @@ const Gestisci = () => {
 				//onClick={handlePrenota}
 				/>
 			</button>
-				<div className='al'>{statoCanc}</div>
+
+		{/*CREAZIONE DEI CONTAINER DELLE PRENOTAZIONI*/ }
+			<div className='al' style={{ 'padding': '0 0 10px 0' }}>{statoCanc}</div>
+			{datiPren.length==0 && <div className='center'>
+				<h3>Nessuna prenotazione presente</h3>
+			</div>}
 			{datiPren.map((item) => (
 				<div
 					key={item.prenotazioneId}
@@ -198,7 +202,9 @@ const Gestisci = () => {
 				</div>
 				<button
 					className="btn"
-					onClick={() => { setDettagli(3); }}>
+					onClick={() => {
+						setDettagli(3);
+					}}>
 					<b>Modifica Prenotazione</b>
 				</button>
 				<button
