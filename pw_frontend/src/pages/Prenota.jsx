@@ -5,11 +5,11 @@ import {
 	format,
 	startOfMonth,
 	endOfMonth,
+	isSameMonth,
+	isSameDay,
 	startOfWeek,
 	endOfWeek,
 	eachDayOfInterval,
-	isSameMonth,
-	isSameDay,
 	isFuture,
 	addMonths,
 	subMonths
@@ -35,8 +35,8 @@ const Prenota = () => {
 
 	const monthStart = startOfMonth(currentMonth);
 	const monthEnd = endOfMonth(monthStart);
-	const startDate = startOfWeek(monthStart);
-	const endDate = endOfWeek(monthEnd);
+	const startDate = startOfWeek(monthStart, { weekStartsOn: 1 });
+	const endDate = endOfWeek(monthEnd, { weekStartsOn: 1 });
 
 	const days = eachDayOfInterval({ start: startDate, end: endDate });
 
@@ -115,41 +115,55 @@ const Prenota = () => {
 	if (loading) return <div>Caricamento in corso...</div>;
 
 
-{/*Metodo per impostare i colori nel calendario di background e bordi*/ }
-	const bgBorderData = (day, list = [], bg = true) => {
+
+	{/*Imposta i colori nel calendario di background e bordi*/ }
+	const bgBorderCol = (day, list = [], bg = true) => {
 		let color = '';
 		let isAvaiable = list.some(availableDay => isSameDay(new Date(availableDay), day));
 
+		//RESTITUISCE COLORE PER IL BACKGROUND
 		if (bg) {
+			//STESSO MESE, DATA>=OGGI
 			if (isSameMonth(day, monthStart) && (isFuture(day, new Date()) || isSameDay(day, new Date()))) {
-				if (isSameDay(day, new Date())) {
-					color = '#ffc966';
-				}
-				else {
-					if (isAvaiable) { color = "#d4edda"; }
-					else { color = '#ffffff'; }
-				}
-			}
-			else { color = '#f0f0f0'; }
-		}
-		else {
+				//APPUNTAMENTO DISPONIBILE
+				if (isAvaiable) { color = "#d4edda"; }//verde
 
-			if (isSameMonth(day, monthStart) && (isFuture(day, new Date()) || isSameDay(day, new Date()))) {
-				if (isSameDay(day, dataScelta)) { color = '3px solid #ff4848'; }
 				else {
-					if (isAvaiable) { color = "3px solid #a9d5b4"; }
+					//DATA ODIERNA
+					if (isSameDay(day, new Date())) { color = '#ffc966'; }//arancione					
+					else { color = '#ffffff'; }//bianco
+				}
+
+			}
+			//MESE DIVERSO
+			else { color = '#f0f0f0'; }//Grigio
+
+		}
+
+		//RESTITUISCE COLORE PER IL BORDO
+		else {
+			//STESSO MESE, DATA>=OGGI
+			if (isSameMonth(day, monthStart) && (isFuture(day, new Date()) || isSameDay(day, new Date()))) {
+
+				//DATA SELEZIONATA
+				if (isSameDay(day, dataScelta)) { color = '3px solid #ff4848'; }//rosso
+
+				else {
+					//DATA ODIERNA
+					if (isSameDay(day, new Date())) { color = '3px solid #ffa500'; }//arancione
 					else {
-						if (isSameDay(day, new Date())) {
-							color = '2px solid #ffa500';
-						}
-						else { color = '2px solid #dddddd'; }
+						//APPUNTAMENTO DISPONIBILE
+						if (isAvaiable) { color = "3px solid #a9d5b4"; }//verde
+						else { color = '2px solid #dddddd'; }//grigio chiaro
 					}
 				}
 			}
-			else { color = '2px solid #dbdbdb'; }
+			else { color = '2px solid #dbdbdb'; }//grigio
+
 		}
 		return color;
 	}
+	
 
 
 {/*Preparazione e invio prenotazione tramite httpPUT*/ }
@@ -272,8 +286,8 @@ const Prenota = () => {
 								className='cell'
 								key={idx}
 								style={{
-									backgroundColor: bgBorderData(day, elencoDate),
-									border: bgBorderData(day, elencoDate, false)
+									backgroundColor: bgBorderCol(day, elencoDate),
+									border: bgBorderCol(day, elencoDate, false)
 								}}
 								onClick={() => {
 									setDataScelta(day);
