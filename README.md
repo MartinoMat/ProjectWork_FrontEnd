@@ -11,8 +11,9 @@ Per il corretto funzionamento si consiglia per tale ragione l'utilizzo del sudde
         <ul>
             <li>react-router-dom</li>
             <li>react-router</li>
-          <li>jwt-decode</li>
-           <li>date-fns</li>
+            <li>jwt-decode</li>
+            <li>date-fns</li>
+            <li>react-select</li>
     <li>react-select</li>
         </ul>
         <li><a href="https://www.react.dev/">React</a></li>
