@@ -21,6 +21,7 @@ import conf from '../img/confirm.png';
 import arrow from '../img/next.png';
 import '../css/Style.css';
 import '../css/Prenotazioni.css';
+import '../css/Referti.css';
 
 
 //import result from './test.json'
@@ -187,7 +188,7 @@ const Gestisci = () => {
 			esameId: dettEsameId,
 			data: format(dataScelta, 'yyyy-MM-dd', { locale: it }),
 			orario: orarioScelto,
-			riservato: token.sub
+			userId: token.sub
 
 		});
 		try {
@@ -220,7 +221,7 @@ const Gestisci = () => {
 			esameId: dettEsameId,
 			data: format(dettData, 'yyyy-MM-dd', { locale: it }),
 			orario: dettOrario,
-			riservato: token.sub
+			userId: token.sub
 
 		});
 		try {
@@ -315,7 +316,7 @@ const Gestisci = () => {
 							setDettData(item.data);
 							setDettOrario(item.orario);
 						}}
-						className='container mini'
+						className='container mini unselectable'
 					>
 						<div className='info-pren'>
 							Codice Prenotazione: {item.prenotazioneId}
@@ -347,7 +348,7 @@ const Gestisci = () => {
 				< div className="center" >
 					<h2>Gestisci<br />la prenotazioni</h2>
 				</div >
-				<div className='container mini'>
+				<div className='container mini unselectable'>
 					<div className='info-pren'>
 						ID Prenotazione: {dettPren}
 					</div>

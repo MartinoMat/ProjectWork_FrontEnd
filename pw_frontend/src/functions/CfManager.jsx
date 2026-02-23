@@ -41,7 +41,7 @@ export async function checkCom(nome, code) {
 			else { return false };
 		});
 
-	} catch (error) {
+	} catch {
 		return false;
 	}
 }
@@ -72,7 +72,7 @@ export function checkCF(name, sur, bd, gen, com, cf) {
 
 	if (err) { return errTxt; }
 	else {
-		console.log("codice fiscale ok");
+		//console.log("codice fiscale ok");
 		return "";
 	}
 };

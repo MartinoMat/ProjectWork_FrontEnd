@@ -82,16 +82,21 @@ const Login = () => {
 				<button
 					className="btn conf"
 					type="submit"
-					>
+					disabled={
+						(!cf || cf.trim() === "") ||
+						(!psw || psw.trim() === "")
+					}>					
 					Accedi
 				</button>
-
-				{/*Bottone per pagina di registrazione*/ }
-				<button
-					className="btn "
-					onClick={() => navigate('/register')}>
-					Registrati ora
-				</button>
+					
+				
+					<div className='center'><br/>Non hai un account?</div>
+					{/*Bottone per pagina di registrazione*/ }
+					<button
+						className="btn "
+						onClick={() => navigate('/register')}>
+						Registrati ora
+						</button>
 			</form>
 
 		</div>

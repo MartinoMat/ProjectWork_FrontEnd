@@ -187,3 +187,7 @@ input:focus:not([type="date"]) {
 .center {
 	text-align: center
 }
+
+.al {
+	align-content: center
+}

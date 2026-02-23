@@ -175,7 +175,7 @@ const Prenota = () => {
 			esameId: esameScelto.value,
 			data: format(dataScelta, 'yyyy-MM-dd', { locale: it }),
 			orario: orarioScelto,
-			riservato: token.sub
+			userId: token.sub
 
 		});
 		try {
