@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import mioLogo from '../img/LogoAzienda.png';
 import '../css/Style.css';
 import { genSHA256 } from '../functions/Hash';
+import { API_BASE_URL } from '../config';
 
 const Login = () => {
 	const [cf, setCF] = useState('');

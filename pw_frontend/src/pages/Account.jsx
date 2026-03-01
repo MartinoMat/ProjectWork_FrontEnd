@@ -6,6 +6,7 @@ import goBack from '../img/back.png'
 import conf from '../img/confirm.png'
 import '../css/Style.css';
 import '../css/Account.css';
+import { API_BASE_URL } from '../config';
 
 const Account = () => {
 	const [cf, setCF] = useState('');
@@ -29,7 +30,7 @@ const Account = () => {
 
 	const compilaCampi = async () => {
 		try {
-			const response = await fetch('https://localhost:7036/User/UserInfo', {
+			const response = await fetch(API_BASE_URL +'/User/UserInfo', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -88,7 +89,7 @@ const Account = () => {
 		var url = '';
 		var body = '';
 		if (displayed == 'confirm-a') {/*POST USER INFO UPDATE */
-			url = 'https://localhost:7036/User/UserUpdate';
+			url = API_BASE_URL +'/User/UserUpdate';
 			body = JSON.stringify({
 				UserId: token.sub,
 				Com_Residenza: comres,
@@ -98,7 +99,7 @@ const Account = () => {
 			});
 		}		
 		else {/*POST USER PASSWORD UPDATE */
-			url = 'https://localhost:7036/User/UserPswUpdate';
+			url = API_BASE_URL +'/User/UserPswUpdate';
 			body = JSON.stringify({
 				UserId: token.sub,
 				PasswordHash: passwordHash,

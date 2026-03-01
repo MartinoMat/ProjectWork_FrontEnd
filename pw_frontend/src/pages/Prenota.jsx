@@ -21,6 +21,7 @@ import conf from '../img/confirm.png';
 import arrow from '../img/next.png';
 import '../css/Style.css';
 import '../css/Prenotazioni.css';
+import { API_BASE_URL } from '../config';
 
 const Prenota = () => {
 	const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -48,7 +49,7 @@ const Prenota = () => {
 		const fetchDati = async () => {
 			try {
 				setLoading(true);
-				const response = await fetch('https://localhost:7036/Prenotazioni/Esami');
+				const response = await fetch(API_BASE_URL +'/Prenotazioni/Esami');
 
 				if (!response.ok) {
 					throw new Error('Errore nel recupero dei dati');
@@ -179,7 +180,7 @@ const Prenota = () => {
 
 		});
 		try {
-			const response = await fetch('https://localhost:7036/Prenotazioni/Prenota', {
+			const response = await fetch(API_BASE_URL +'/Prenotazioni/Prenota', {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',

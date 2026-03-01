@@ -22,6 +22,7 @@ import arrow from '../img/next.png';
 import '../css/Style.css';
 import '../css/Prenotazioni.css';
 import '../css/Referti.css';
+import { API_BASE_URL } from '../config';
 
 
 //import result from './test.json'
@@ -62,7 +63,7 @@ const Gestisci = () => {
 
 	const fetchPren = async () => {
 		try {
-			const response = await fetch('https://localhost:7036/Prenotazioni/PrenotazioniUser', {
+			const response = await fetch(API_BASE_URL +'/Prenotazioni/PrenotazioniUser', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -92,7 +93,7 @@ const Gestisci = () => {
 				prenotazioneId: dettPren,
 				userId: token.sub
 			});
-			const response = await fetch('https://localhost:7036/Prenotazioni/DateAlt', {
+			const response = await fetch(API_BASE_URL +'/Prenotazioni/DateAlt', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -192,7 +193,7 @@ const Gestisci = () => {
 
 		});
 		try {
-			const response = await fetch('https://localhost:7036/Prenotazioni/Prenota', {
+			const response = await fetch(API_BASE_URL +'/Prenotazioni/Prenota', {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
@@ -225,7 +226,7 @@ const Gestisci = () => {
 
 		});
 		try {
-			const response = await fetch('https://localhost:7036/Prenotazioni/AnnullaPren', {
+			const response = await fetch(API_BASE_URL +'/Prenotazioni/AnnullaPren', {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',

@@ -6,6 +6,7 @@ import goBack from '../img/back.png';
 import '../css/Style.css';
 import '../css/Prenotazioni.css';
 import '../css/referti.css';
+import { API_BASE_URL } from '../config';
 
 
 const Referti = () => {
@@ -19,7 +20,7 @@ const Referti = () => {
 
 	const fetchPren = async () => {
 		try {
-			const response = await fetch('https://localhost:7036/Referti/RefertiUser', {
+			const response = await fetch(API_BASE_URL +'/Referti/RefertiUser', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -51,7 +52,7 @@ const Referti = () => {
 		});
 
 		try {
-			const response = await fetch('https://localhost:7036/Referti/Download', {
+			const response = await fetch(API_BASE_URL +'/Referti/Download', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

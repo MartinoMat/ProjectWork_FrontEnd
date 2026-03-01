@@ -4,6 +4,7 @@ import { genSHA256 } from '../functions/Hash.jsx';
 import { checkCF } from '../functions/CfManager.jsx';
 import {	format, parseISO} from 'date-fns';
 import '../css/Style.css';
+import { API_BASE_URL } from '../config';
 
 const Reg = () => {
 	const [err, setErr] = useState('');
@@ -62,7 +63,7 @@ const Reg = () => {
 					Email: email,
 					PasswordHash: passwordHash
 				});
-				const response = await fetch('https://localhost:7036/User/Add', {
+				const response = await fetch(API_BASE_URL +'/User/Add', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',

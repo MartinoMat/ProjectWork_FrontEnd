@@ -1,3 +1,5 @@
+import { API_BASE_URL } from '../config';
+
 export function nameToCode(name, isName = false) {
 	let s = name.toUpperCase().replace(/[^A-Z]/g, '');
 	let consonanti = s.replace(/[AEIOU]/g, '');
@@ -28,7 +30,7 @@ export function dateToCode(date, gender) {
 // Restituisce True se il codice del comune corrisponde al nome, altrimenti False
 export async function checkCom(nome, code) {
 	try {
-		const response = await fetch(`https://localhost:7036/Comuni/Codice?nome=${encodeURIComponent(nome)}`);
+		const response = await fetch(API_BASE_URL +'/Comuni/Codice?nome='+nome);
 
 		if (!response.ok) {
 			throw new Error(`Comune non trovato`);
