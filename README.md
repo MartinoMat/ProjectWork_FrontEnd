@@ -1,5 +1,6 @@
 ## Front-End ProjectWork n.16 - MARTINO MATTEO 
 
+<a href="https://drive.google.com/file/d/16o1F9OHrvXLIPN5Y4zNylpyuxgkYc12v">Video Dimostrazione</a><br/><br/>
 Per la scrittura del Front-End è stato usato l'IDE Visual Studio 2026 e un progetto React+Vite (linguaggio JavaScript XML + CSS).<br>
 Per il corretto funzionamento si consiglia per tale ragione l'utilizzo del suddetto <a href="https://visualstudio.microsoft.com/it/">Visual Studio</a>.
 
@@ -18,4 +19,7 @@ Per il corretto funzionamento si consiglia per tale ragione l'utilizzo del sudde
         <li><a href="https://www.react.dev/">React</a></li>
         <li><a href="https://www.vite.dev/">Vite</a></li>       
         </li>
+        <li>Creazione file <code>config.js</code> nella cartella <code>src</code> contenente questa stringa <br/>
+          <code>export const API_BASE_URL = "https://localhost:xxxx"; </code><br/>
+        parametrizzante l'indirizzo del server</li>
       </ol>
