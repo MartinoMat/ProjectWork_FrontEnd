@@ -34,7 +34,6 @@ const Reg = () => {
 
 	const handleBlur = () => {
 		setErr(checkCF(name, sur, format(bday, 'yyyy-MM-dd'), gen, comnasc, cf));
-		//if (err != "ok") { alert(err); }
 	};
 
 	const navigate = useNavigate();

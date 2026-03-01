@@ -10,10 +10,6 @@ import '../css/referti.css';
 
 const Referti = () => {
 	const [datiRef, setReferti] = useState([]);
-	const [dettPren, setDettPren] = useState(null);
-	const [dettEsame, setDettEsame] = useState(null);
-	const [dettData, setDettData] = useState(null);
-	const [dettOrario, setDettOrario] = useState(null);
 	const [statoRef, setStatoRef] = useState(null);
 
 
@@ -46,7 +42,7 @@ const Referti = () => {
 		fetchPren();
 	}, []);
 
-	const handleDownload = async (e,pren) => {
+	const handleDownload = async (e, pren, esame, data, ora) => {
 		if (e && e.preventDefault) { e.preventDefault(); }
 		var body = JSON.stringify({
 			prenotazioneId: pren,
@@ -91,10 +87,10 @@ const Referti = () => {
 			window.URL.revokeObjectURL(url);
 
 
-			setStatoRef('Il referto ' + dettEsame + ' del ' + dettData + ' alle ' + dettOrario.slice(0, 5) + ' è stato scaricato con successo');
+			setStatoRef('Il referto ' + esame + ' del ' + data + ' alle ' + ora.slice(0, 5) + ' è stato scaricato con successo');
 		} catch (err) {
 			console.log(err.message);
-			setStatoRef('Il download del referto ' + dettEsame + ' del ' + dettData + ' alle ' + dettOrario.slice(0, 5)+' ha riscontrato un errore');
+			setStatoRef('Il download del referto ' + esame + ' del ' + data + ' alle ' + ora.slice(0, 5) +' ha riscontrato un errore');
 		}
 		fetchPren();
 	};
@@ -129,10 +125,7 @@ const Referti = () => {
 					<div
 						key={item.prenotazioneId}
 						onClick={() => {
-							setDettData(item.data);
-							setDettEsame(item.nomeEsame);
-							setDettOrario(item.orario)
-							handleDownload(null, item.prenotazioneId);
+							handleDownload(null, item.prenotazioneId, item.nomeEsame, item.data, item.orario);
 						}}
 						className='container mini unselectable'>
 
